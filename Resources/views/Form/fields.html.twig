@@ -1,0 +1,405 @@
+
+{% block xthiago_select_widget %}
+	{%  set prefix = 'cs' ~ random(9999) %}
+
+	<style type="text/css">
+		/* seletor para remover padding de inputs select2 com classes .col-md-* */
+		.xthiago_select .select2-container.select2-container-multi {
+			padding: 0px;
+		}
+
+		/* faz com que select2 tenha aparencia dos inputs do bt3*/
+		.xthiago_select .select2-choices {
+			/* copied from .form-control */
+			background-color: #FFFFFF;
+			background-image: none;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+			color: #555555;
+			display: block;
+			transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+			vertical-align: middle;
+			width: 100%;
+		}
+	</style>
+
+	<div class="xthiago_select {{ prefix }}">
+		
+		{% set data = {} %}
+		{% for key in choices|keys %}
+
+			{% set item = {'id': key, 'markup': choices[key]} %}
+			{% set data = data|merge({ (loop.index0): item }) %} 
+
+		{% endfor %}
+
+		{{ block('form_widget_simple') }}
+
+		<script>
+			var data_{{ prefix }} = null;
+
+				$( function() {
+					$('#{{ id }}')
+						.on('change', function(e) {   
+							{% if onchange is defined %}
+							 	{{onchange}}(e) 
+							{% endif %}
+						 })
+						.select2({
+					    placeholder: "{% if placeholder is defined %}{{ placeholder }}{% else %}search for a contact{% endif %}",
+					    {% if width is defined %}width: {{ width }},{% endif %}
+					    minimumInputLength: {% if minimumInputLength is defined %}{{ minimumInputLength }}{% else %}0{% endif %},
+					    data: {
+					    	results: {{ data|json_encode()|raw }},
+					    	text: function(item) { 
+					    		return item.markup 
+					    	}
+					    },
+					    
+					    multiple: {{ multiple ? 'true' : 'false'}},
+
+					    {% if allowcreate is defined and allowcreate == true %}
+							createSearchChoice: function (term, data) {
+								if ($(data).filter(function () {
+									return this.markup.localeCompare(term) === 0;
+								}).length === 0) {
+									return {
+										id: term,
+										markup: term
+									};
+								}
+							},
+					    {% endif %}
+
+					    formatResult: {{ prefix }}_formatResult, // omitted for brevity, see the source of this page
+					    formatSelection: {{ prefix }}_formatSelection,  // omitted for brevity, see the source of this page
+					    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+					    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+					});
+				});
+
+			    function {{ prefix }}_formatResult(data) {
+			        return data.markup;
+			    }
+
+			    function {{ prefix }}_formatSelection(data) {
+			        return data.markup;
+			    }			
+		</script>	
+	</div>
+{% endblock %}
+
+
+{% block xthiago_select_async_widget %}
+
+	<style type="text/css">
+		/* seletor para remover padding de inputs select2 com classes .col-md-* */
+		.xthiago_select_async .select2-container.select2-container-multi {
+			padding: 0px;
+		}
+
+		/* faz com que select2 tenha aparencia dos inputs do bt3*/
+		.xthiago_select_async .select2-choices {
+			/* copied from .form-control */
+			background-color: #FFFFFF;
+			background-image: none;
+			border: 1px solid #CCCCCC;
+			border-radius: 4px;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+			color: #555555;
+			display: block;
+			transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+			vertical-align: middle;
+			width: 100%;
+		}
+	</style>
+
+	{%  set prefix = 'cs' ~ random(9999) %}
+
+	<div class="xthiago_select_async {{ prefix }}">
+		{{ block('form_widget_simple') }}
+
+		<script>
+				$( function() {
+					$('#{{ id }}')
+						.on('change', function(e) {   
+							{% if onchange is defined %}
+							 	{{onchange}}(e) 
+							{% endif %}
+						 })
+						.select2({
+					    placeholder: "{% if placeholder is defined %}{{ placeholder }}{% else %}search for a contact{% endif %}",
+					    {% if width is defined %}width: {{ width }},{% endif %}
+					    minimumInputLength: {% if minimumInputLength is defined %}{{ minimumInputLength }}{% else %}1{% endif %},
+					    multiple: {{ multiple ? 'true' : 'false'}},
+					    {% if allowcreate is defined and allowcreate == true %}
+							createSearchChoice: function (term, data) {
+							        if ($(data).filter(function () {
+							            return this.markup.localeCompare(term) === 0;
+							        }).length === 0) {
+							            return {
+							                id: term,
+							                markup: term
+							            };
+							        }
+						    },
+						{% endif %}
+					    ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
+					        url: "{{ path(data_source_route) }}",
+					        dataType: 'json',
+					        data: function (term, page) {
+					            return {
+					                q: term, // search term
+					                page_limit: 10,
+					                {% if extrainfo %}extrainfo: {{ extrainfo }},{% endif %}
+					                allowcreate: {{ allowcreate == true ? 1 : 0 }}
+					            };
+					        },
+					        results: function (data, page) { // parse the results into the format expected by Select2.
+					            // since we are using custom formatting functions we do not need to alter remote JSON data
+					            return {results: data};
+					        }
+					    },
+					    initSelection: function(element, callback) {
+					        // the input tag has a value attribute preloaded that points to a preselected movie's id
+					        // this function resolves that id attribute to an object that select2 can render
+					        // using its formatResult renderer - that way the movie name is shown preselected
+					        var id=$(element).val();
+					        if (id!=="") {
+					            $.ajax("{{ path(data_source_route) }}", {
+					                data: {
+					                    id: id{% if extrainfo %},extrainfo: {{ extrainfo }}{% endif %}
+					                },
+					                dataType: "json"
+					            }).done(function(data) { if ( data.length > 1 ) { callback(data) } else { callback(data[0]) } });
+					        }
+					    },
+					    formatResult: {{ prefix }}_formatResult, // omitted for brevity, see the source of this page
+					    formatSelection: {{ prefix }}_formatSelection,  // omitted for brevity, see the source of this page
+					    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+					    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+					});
+				});
+
+			    function {{ prefix }}_formatResult(data) {
+			        return data.markup;
+			    }
+
+			    function {{ prefix }}_formatSelection(data) {
+			        return data.markup;
+			    }			
+		</script>	
+	</div>
+{% endblock %}
+
+
+{% block xthiago_datetime_widget %}
+
+	<style type="text/css">
+		.xthiago_datetime input {
+			text-align: center;
+		}
+		/* definem tamanho do input */
+		.xthiago_datetime.date input {
+			width: 100px;
+		}
+		.xthiago_datetime.date input.input-sm {
+			width: 95px;
+		}
+		.xthiago_datetime.date input.input-lg {
+			width: 130px;
+		}
+		.xthiago_datetime.datetime input {
+			width: 141px;
+		}
+		.xthiago_datetime.datetime input.input-sm {
+			width: 135px;
+		}
+		.xthiago_datetime.datetime input.input-sm {
+			width: 180px;
+		}
+
+	</style>
+
+	{% set inputSizeClass = '' %}
+	{% if form.vars.dateType is defined %}
+		{% set inputSizeClass = form.vars.dateType %}
+	{% endif %}
+	
+	{%  set prefix = 'dt' ~ random(9999) %}
+
+	<div class="xthiago_datetime {{ prefix }} {{ inputSizeClass }}">
+
+		{{ block('form_widget_simple') }}
+
+		{% if datepicker %}
+			<script type="text/javascript">
+
+				$(function() {
+					$('#{{ id }}')
+							.on('change', function(e) {
+								{% if onchange is defined %}
+								 	{{onchange}}(e) 
+								{% endif %}
+							 })
+							.datetimepicker({
+								format: '{{ format }}',
+
+								{% if autoclose %}
+									autoclose: {{ autoclose }},
+								{% endif %}
+
+								{% if todayBtn %}
+									todayBtn: 'linked',
+								{% endif %}
+
+								{% if startDate %}
+									startDate: '{{ startDate }}',
+								{% endif %}
+
+								{% if endDate %}
+									endDate: '{{ endDate }}',
+								{% endif %}
+
+								language: '{{ language }}',
+								
+								{% if minView %}
+									minView: '{{ minView }}',
+								{% endif %}
+
+								{% if maxView %}
+									maxView: '{{ maxView }}',
+								{% endif %}
+
+								{% if todayHighlight %}
+									todayHighlight: {{ 'true'|raw }},
+								{% endif %}
+
+								{% if keyboardNavigation %}
+									keyboardNavigation: {{ 'true'|raw }},
+								{% endif %}
+
+								{% if daysOfWeekDisabled %}
+									daysOfWeekDisabled: '{{ daysOfWeekDisabled }}',
+								{% endif %}
+
+								{% if weekStart %}
+									weekStart: {{ weekStart }},
+								{% endif %}
+								
+								{% if startView %}
+									startView: {{ startView }},
+								{% endif %}
+							});
+				});
+			</script>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block xthiago_daterange_widget %}
+
+<style type="text/css">
+	.xthiago_daterange .xthiago_datetime {
+		display: inline-block;
+	}
+
+	.xthiago_daterange .field-container {
+		display: inline-block;
+	}
+	.xthiago_daterange .field-container:first-child {
+		padding-left: 15px;
+	}
+
+	.xthiago_daterange .field-label {
+		display: inline-block;
+		font-weight: normal;
+		vertical-align: top;
+		padding-top: 8px;
+	}
+
+	.xthiago_daterange .field-label-sm {
+		padding-top: 6px;
+	}
+
+	.xthiago_daterange .field-label-lg {
+		font-size: 18px;
+		line-height: 1.33;
+		padding-top: 14px;
+	}
+</style>
+	
+	{%  set prefix = 'dtr' ~ random(9999) %}
+
+	{% set labelSizeClass = '' %}
+	
+	{% if attr.class is defined %}
+
+		{% if 'input-sm' in attr.class %}
+			{% set labelSizeClass = 'field-label-sm' %}
+		{% elseif 'input-lg' in attr.class %}
+			{% set labelSizeClass = 'field-label-lg' %}
+		{% else %}
+			{% set labelSizeClass = '' %}
+		{% endif %}
+
+	{% endif %}
+
+	<div class="xthiago_daterange {{ prefix }} row">
+		
+
+		{% for child in form %}
+			{% if not child.rendered %}
+
+				<div class="field-container field-container-{{ loop.index }} {{ child.vars.name }}">
+
+					{% if child.vars.label is defined and child.vars.label != false %}
+						<label class="field-label {{ labelSizeClass }}" for="{{ child.vars.id }}">
+							{{ child.vars.label }}
+						</label>
+					{% endif %}
+
+					{{ form_widget(child, {attr: attr}) }}
+
+				</div>
+
+			{% endif %}
+		{% endfor %}
+
+	</div>
+
+	{% if datepicker %}
+		<script type="text/javascript">
+			$(function() {
+
+				var daterange = $('.{{ prefix }}');
+				var from = $(daterange.find('.field-container-1 input').first());
+				var to = $(daterange.find('.field-container-2 input').first());
+
+				from.on('changeDate', 
+					function(ev) {
+
+						var fromDate = new Date(ev.date.valueOf());
+
+						{% if dateType == 'date' %}
+
+							fromDate.setDate(ev.date.getUTCDate());//FIX for datepicker work without time
+							// more info: https://github.com/smalot/bootstrap-datetimepicker/issues/122 (related problemn)
+
+							/*console.log(ev.date.getUTCDate());
+							console.log(ev.date.getUTCHours());
+		        			console.log(ev.date.valueOf());
+		        			console.log(startDate);*/
+
+						{% endif %}
+						
+						to.datetimepicker('setStartDate', fromDate);
+					}
+				);
+
+			});
+		</script>
+	{% endif %}
+
+{% endblock %}

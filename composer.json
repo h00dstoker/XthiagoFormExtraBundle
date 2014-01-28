@@ -1,0 +1,35 @@
+{
+    "name": "xthiago/formextra",
+    "type": "symfony-bundle",
+    "description": "Symfony AjaxGridBundle",
+    "keywords": ["form", "symfony", "date", "select2"],
+    "homepage": "https://github.com/xthiago/XthiagoFormExtraBundle",
+    "license": "GPL 2.0",
+    "authors": [
+        {
+            "name": "Thiago Rodrigues",
+            "email": "xthiago@gmail.com"
+        },
+        {
+            "name": "Omar Alves",
+            "email": "omar331@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": "~2.1"
+    },
+    "require-dev": {
+        "twig/twig": "~1.5",
+        "symfony/yaml": "~2.1"
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-0": { "Xthiago\\FormExtraBundle": "" }
+    },
+    "target-dir": "Xthiago/FormExtraBundle",
+    "repositories": [
+    ]
+}

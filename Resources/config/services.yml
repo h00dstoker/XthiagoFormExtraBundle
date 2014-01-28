@@ -1,0 +1,21 @@
+parameters:
+services:
+    xthiago_form_extra.type.select:
+        class: Xthiago\FormExtraBundle\Form\Type\SelectType
+        tags:
+            - { name: form.type, alias: xthiago_select }
+
+    xthiago_form_extra.type.select_async:
+        class: Xthiago\FormExtraBundle\Form\Type\SelectAsyncType
+        tags:
+            - { name: form.type, alias: xthiago_select_async }
+
+    xthiago_form_extra.type.xthiago_datetime:
+        class: Xthiago\FormExtraBundle\Form\Type\DatetimeType
+        tags:
+            - { name: form.type, alias: xthiago_datetime }
+
+    xthiago_form_extra.type.xthiago_daterange:
+        class: Xthiago\FormExtraBundle\Form\Type\DateRangeType
+        tags:
+            - { name: form.type, alias: xthiago_daterange }
