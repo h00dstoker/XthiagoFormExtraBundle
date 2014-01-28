@@ -19,3 +19,14 @@ services:
         class: Xthiago\FormExtraBundle\Form\Type\DateRangeType
         tags:
             - { name: form.type, alias: xthiago_daterange }
+
+    xthiago_form_extra.type.xthiago_boolean:
+        class: Xthiago\FormExtraBundle\Form\Type\BooleanType
+        tags:
+            - { name: form.type, alias: xthiago_boolean }
+
+    xthiago_form_extra.type.xthiago_spinner:
+        class: Xthiago\FormExtraBundle\Form\Type\SpinnerType
+        tags:
+            - { name: form.type, alias: xthiago_spinner }
+            
