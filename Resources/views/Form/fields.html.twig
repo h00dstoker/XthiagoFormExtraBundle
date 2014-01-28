@@ -403,3 +403,45 @@
 	{% endif %}
 
 {% endblock %}
+
+{% block xthiago_boolean_widget %}
+
+	{% if form.vars.styleType is defined %}
+		{% set styleType = 'ace-switch-' ~ form.vars.styleType %}
+	{% else %}
+		{% set styleType = 'ace-switch-2' %}
+	{% endif %}
+
+	{% if form.vars.attr.class is defined %}
+		{% set classes = form.vars.attr.class ~ ' ace ace-switch ' ~ styleType %}
+	{% else %}
+		{% set classes = 'ace ace-switch ' ~ styleType %}
+	{% endif %}
+
+
+	<label class="ace-switch-toggle">
+		{{ form_widget(form, {'attr': {'class': classes }}) }}
+		<span class="lbl"></span>
+    </label>
+
+{% endblock %}
+
+{% block xthiago_spinner_widget %}
+
+	{%  set prefix = 'spinner-' ~ random(9999) %}
+
+	{% if form.vars.attr.class is defined %}
+		{% set classes = form.vars.attr.class ~ ' ' ~ prefix %}
+	{% else %}
+		{% set classes = 'input-mini ' ~ prefix %}
+	{% endif %}
+
+	{{ form_widget(form, {'attr': {'class': classes }}) }}
+
+	<script type="text/javascript">
+	    $(function() {
+	        $('.{{ prefix }}').spinner();
+	    });
+	</script>
+
+{% endblock %}
