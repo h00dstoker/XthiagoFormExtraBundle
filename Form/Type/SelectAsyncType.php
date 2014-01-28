@@ -20,6 +20,7 @@ class SelectAsyncType extends AbstractType
                 'allowcreate' => false,
                 'placeholder' => null,
                 'extrainfo' => null,
+                'beforeAjax' => null,
             )
         );
     }
@@ -31,6 +32,7 @@ class SelectAsyncType extends AbstractType
         $view->vars['allowcreate'] = array_key_exists('allowcreate', $options) ? $options['allowcreate'] : null;
         $view->vars['placeholder'] = array_key_exists('placeholder', $options) ? $options['placeholder'] : null;
         $view->vars['extrainfo'] = array_key_exists('extrainfo', $options) ? $options['extrainfo'] : null;
+        $view->vars['beforeAjax'] = array_key_exists('beforeAjax', $options) ? $options['beforeAjax'] : null;
     }
 
     public function getParent()

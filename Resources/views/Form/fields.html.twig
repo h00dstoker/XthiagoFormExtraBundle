@@ -149,12 +149,27 @@
 					        url: "{{ path(data_source_route) }}",
 					        dataType: 'json',
 					        data: function (term, page) {
-					            return {
+
+					        	// default info to be posted
+								var ajaxInfo = {	
 					                q: term, // search term
 					                page_limit: 10,
 					                {% if extrainfo %}extrainfo: {{ extrainfo }},{% endif %}
 					                allowcreate: {{ allowcreate == true ? 1 : 0 }}
 					            };
+
+					            // it's possible to set additional information server request,
+					            // for example, based on external sources.
+								{% if beforeAjax  %}
+									var beforeAjaxInfo = {{ beforeAjax }}();
+
+									for(var k in beforeAjaxInfo ) {
+										info = beforeAjaxInfo[k];
+										ajaxInfo[k] = info;
+									}
+								{% endif %};
+
+					            return ajaxInfo;
 					        },
 					        results: function (data, page) { // parse the results into the format expected by Select2.
 					            // since we are using custom formatting functions we do not need to alter remote JSON data
