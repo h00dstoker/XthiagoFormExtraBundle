@@ -148,6 +148,11 @@
 					    ajax: { // instead of writing the function to execute the request we use Select2's convenient helper
 					        url: "{{ path(data_source_route) }}",
 					        dataType: 'json',
+
+					        {% if quietMillis is defined and quietMillis == true %}
+					        	quietMillis: {{ quietMillis }},
+					        {% endif %}
+
 					        data: function (term, page) {
 
 					        	// default info to be posted
