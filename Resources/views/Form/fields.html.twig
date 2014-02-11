@@ -149,7 +149,7 @@
 					        url: "{{ path(data_source_route) }}",
 					        dataType: 'json',
 
-					        {% if quietMillis is defined and quietMillis == true %}
+					        {% if quietMillis is defined and quietMillis is not null %}
 					        	quietMillis: {{ quietMillis }},
 					        {% endif %}
 
