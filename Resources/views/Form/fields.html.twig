@@ -149,6 +149,11 @@
 					    	{% set pathToAjax = path(data_source_route) %}					    	
 					        url: "{{ pathToAjax }}",
 					        dataType: 'json',
+
+					        {% if quietMillis is defined and quietMillis is not null %}
+					        	quietMillis: {{ quietMillis }},
+					        {% endif %}
+
 					        data: function (term, page) {
 
 					        	// default info to be posted
