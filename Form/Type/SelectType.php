@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Xthiago\FormExtraBundle\Form\Type;
 
@@ -21,12 +21,14 @@ class SelectType extends AbstractType
                 'extrainfo' => null,
                 'choices' => null,
                 'minimumInputLength' => 0,
+                'allowclear' => true,
             )
         );
     }
 
     public function buildView(\Symfony\Component\Form\FormView $view, \Symfony\Component\Form\FormInterface $form, array $options)
     {
+        $view->vars['allowclear'] = array_key_exists('allowclear', $options) ? $options['allowclear'] : true;
         $view->vars['multiple'] = array_key_exists('multiple', $options) ? $options['multiple'] : null;
         $view->vars['allowcreate'] = array_key_exists('allowcreate', $options) ? $options['allowcreate'] : null;
         $view->vars['placeholder'] = array_key_exists('placeholder', $options) ? $options['placeholder'] : null;
