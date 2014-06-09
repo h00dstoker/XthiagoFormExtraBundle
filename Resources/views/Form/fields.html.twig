@@ -49,6 +49,7 @@
 						.select2({
 					    placeholder: "{% if placeholder is defined %}{{ placeholder }}{% else %}search for a contact{% endif %}",
 					    {% if width is defined %}width: {{ width }},{% endif %}
+					    allowClear: {{ allowclear is defined and allowclear == false ? 'false' : 'true'}},
 					    minimumInputLength: {% if minimumInputLength is defined %}{{ minimumInputLength }}{% else %}0{% endif %},
 					    data: {
 					    	results: {{ data|json_encode()|raw }},
@@ -132,6 +133,7 @@
 					    placeholder: "{% if placeholder is defined %}{{ placeholder }}{% else %}search for a contact{% endif %}",
 					    {% if width is defined %}width: {{ width }},{% endif %}
 					    minimumInputLength: {% if minimumInputLength is defined %}{{ minimumInputLength }}{% else %}1{% endif %},
+					    allowClear: {{ allowclear is defined and allowclear == false ? 'false' : 'true'}},
 					    multiple: {{ multiple ? 'true' : 'false'}},
 					    {% if allowcreate is defined and allowcreate == true %}
 							createSearchChoice: function (term, data) {
