@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Xthiago\FormExtraBundle\Form\Type;
 
@@ -24,6 +24,7 @@ class BooleanType extends AbstractType
             array(
                 'label' => false,
                 'styleType' => '2', // em pt é: 2 e 7.
+                'customClasses' => ''
             )
         );
     }
@@ -31,6 +32,7 @@ class BooleanType extends AbstractType
     public function buildView(\Symfony\Component\Form\FormView $view, \Symfony\Component\Form\FormInterface $form, array $options)
     {
         $view->vars['styleType'] = array_key_exists('styleType', $options) ? $options['styleType'] : '2';
+        $view->vars['customClasses'] = array_key_exists('customClasses', $options) ? $options['customClasses'] : '';
 
         parent::buildView($view, $form, $options);
     }

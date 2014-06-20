@@ -443,9 +443,8 @@
 	{% if form.vars.attr.class is defined %}
 		{% set classes = form.vars.attr.class ~ ' ace ace-switch ' ~ styleType %}
 	{% else %}
-		{% set classes = 'ace ace-switch ' ~ styleType %}
+		{% set classes = ' ace ace-switch ' ~ styleType %}
 	{% endif %}
-
 
 	<label class="ace-switch-toggle">
 		{{ form_widget(form, {'attr': {'class': classes }}) }}
