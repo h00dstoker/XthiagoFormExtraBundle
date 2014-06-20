@@ -459,9 +459,9 @@
 	{%  set prefix = 'spinner-' ~ random(9999) %}
 
 	{% if form.vars.attr.class is defined %}
-		{% set classes = form.vars.attr.class ~ ' ' ~ prefix %}
+		{% set classes = form.vars.attr.class ~ '  valida-numerico ' ~ prefix %}
 	{% else %}
-		{% set classes = 'input-mini ' ~ prefix %}
+		{% set classes = 'valida-numerico input-mini ' ~ prefix %}
 	{% endif %}
 
 	{{ form_widget(form, {'attr': {'class': classes }}) }}
