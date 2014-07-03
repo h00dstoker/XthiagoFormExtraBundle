@@ -29,4 +29,8 @@ services:
         class: Xthiago\FormExtraBundle\Form\Type\SpinnerType
         tags:
             - { name: form.type, alias: xthiago_spinner }
-            
+
+    xthiago_form_extra.type.xthiago_numberrange:
+        class: Xthiago\FormExtraBundle\Form\Type\NumberRangeType
+        tags:
+            - { name: form.type, alias: xthiago_numberrange }
