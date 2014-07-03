@@ -473,3 +473,51 @@
 	</script>
 
 {% endblock %}
+
+
+
+
+
+
+
+
+{% block xthiago_numberrange_widget %}
+	{%  set prefix = 'nmr' ~ random(9999) %}
+
+	{% set labelSizeClass = '' %}
+
+	{% if attr.class is defined %}
+
+		{% if 'input-sm' in attr.class %}
+			{% set labelSizeClass = 'field-label-sm' %}
+		{% elseif 'input-lg' in attr.class %}
+			{% set labelSizeClass = 'field-label-lg' %}
+		{% else %}
+			{% set labelSizeClass = '' %}
+		{% endif %}
+
+	{% endif %}
+
+	<div class="xthiago_numberange {{ prefix }} row">
+
+
+		{% for child in form %}
+			{% if not child.rendered %}
+
+				<div class="field-container field-container-{{ loop.index }} {{ child.vars.name }}">
+
+					{% if child.vars.label is defined and child.vars.label != false %}
+						<label class="field-label {{ labelSizeClass }}" for="{{ child.vars.id }}">
+							{{ child.vars.label }}
+						</label>
+					{% endif %}
+
+					{{ form_widget(child, {attr: attr}) }}
+
+				</div>
+
+			{% endif %}
+		{% endfor %}
+
+	</div>
+{% endblock %}
