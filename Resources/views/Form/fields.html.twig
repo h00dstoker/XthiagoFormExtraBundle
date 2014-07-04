@@ -481,6 +481,58 @@
 
 
 {% block xthiago_numberrange_widget %}
+
+	<script>
+		$(".xthiago_number.number input").keyup(function(event) {
+            if (this.value.match(/[^(0-9)|\,]/g)) {
+                this.value = this.value.replace(/[^(0-9)|\,]/g, '');
+            }
+        });
+	</script>
+
+	<style type="text/css">
+		.xthiago_number input {
+			text-align: center;
+		}
+		/* definem tamanho do input */
+		.xthiago_number.number input {
+			width: 100px;
+		}
+		.xthiago_number.number input.input-sm {
+			width: 95px;
+		}
+		.xthiago_number.number input.input-lg {
+			width: 130px;
+		}
+		.xthiago_numberange .xthiago_number {
+			display: inline-block;
+		}
+
+		.xthiago_numberange .field-container {
+			display: inline-block;
+		}
+		.xthiago_numberange .field-container:first-child {
+			padding-left: 15px;
+		}
+
+		.xthiago_numberange .field-label {
+			display: inline-block;
+			font-weight: normal;
+			vertical-align: top;
+			padding-top: 8px;
+		}
+
+		.xthiago_numberange .field-label-sm {
+			padding-top: 6px;
+		}
+
+		.xthiago_numberange .field-label-lg {
+			font-size: 18px;
+			line-height: 1.33;
+			padding-top: 14px;
+		}
+	</style>
+
 	{%  set prefix = 'nmr' ~ random(9999) %}
 
 	{% set labelSizeClass = '' %}
@@ -499,7 +551,6 @@
 
 	<div class="xthiago_numberange {{ prefix }} row">
 
-
 		{% for child in form %}
 			{% if not child.rendered %}
 
@@ -511,7 +562,9 @@
 						</label>
 					{% endif %}
 
-					{{ form_widget(child, {attr: attr}) }}
+					<div class='xthiago_number number clearfix'>
+						{{ form_widget(child, {attr: attr}) }}
+					</div>
 
 				</div>
 
