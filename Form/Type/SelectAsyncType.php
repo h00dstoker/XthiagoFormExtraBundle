@@ -2,8 +2,8 @@
 
 namespace Xthiago\FormExtraBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Xthiago\FormExtraBundle\Form\Type\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormView\FormInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormView\FormInterface;
 
 class SelectAsyncType extends AbstractType
 {
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(
@@ -45,7 +45,7 @@ class SelectAsyncType extends AbstractType
         return 'text';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'xthiago_select_async';
     }

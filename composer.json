@@ -13,6 +13,10 @@
         {
             "name": "Omar Alves",
             "email": "omar331@gmail.com"
+        },
+        {
+            "name": "Felipe Araujo",
+            "email": "felipearaujo.asti@gmail.com"
         }
     ],
     "minimum-stability": "dev",

@@ -2,8 +2,8 @@
 
 namespace Xthiago\FormExtraBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Xthiago\FormExtraBundle\Form\Type\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormView\FormInterface;
@@ -18,7 +18,7 @@ class BooleanType extends AbstractType
     {
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(
@@ -42,7 +42,7 @@ class BooleanType extends AbstractType
         return 'checkbox';
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'xthiago_boolean';
     }
