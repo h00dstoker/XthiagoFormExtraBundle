@@ -17,7 +17,7 @@ class DateRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('from', 'xthiago_datetime', 
+            ->add('from', \Xthiago\FormExtraBundle\Form\Type\DatetimeType::class,
                 array(
                     'format' => $options['format'],
                     'label' => 'de',
@@ -27,7 +27,7 @@ class DateRangeType extends AbstractType
                     'datepicker' => $options['datepicker'],
                 )
             )
-            ->add('to', 'xthiago_datetime', 
+            ->add('to', \Xthiago\FormExtraBundle\Form\Type\DatetimeType::class,
                 array(
                     'format' => $options['format'],
                     'label' => 'até',
