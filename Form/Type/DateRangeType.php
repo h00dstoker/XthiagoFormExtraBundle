@@ -91,7 +91,7 @@ class DateRangeType extends AbstractType
 
     public function getParent()
     {
-        return 'text';
+        return \Symfony\Component\Form\Extension\Core\Type\TextType::class;
     }
 
     public function getBlockPrefix()

@@ -39,7 +39,7 @@ class BooleanType extends AbstractType
 
     public function getParent()
     {
-        return 'checkbox';
+        return \Symfony\Component\Form\Extension\Core\Type\CheckboxType::class;
     }
 
     public function getBlockPrefix()
