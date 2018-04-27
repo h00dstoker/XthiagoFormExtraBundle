@@ -1,5 +1,5 @@
 {
-    "name": "xthiago/formextra",
+    "name": "utils/formextra",
     "type": "symfony-bundle",
     "description": "Symfony AjaxGridBundle",
     "keywords": ["form", "symfony", "date", "select2"],
