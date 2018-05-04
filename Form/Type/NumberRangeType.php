@@ -17,13 +17,13 @@ class NumberRangeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('from', 'text',
+            ->add('from', \Symfony\Component\Form\Extension\Core\Type\TextType::class,
                 array(
                     'label' => 'de',
                     'required' => false
                 )
             )
-            ->add('to', 'text',
+            ->add('to', \Symfony\Component\Form\Extension\Core\Type\TextType::class,
                 array(
                     'label' => 'até',
                     'required' => false
